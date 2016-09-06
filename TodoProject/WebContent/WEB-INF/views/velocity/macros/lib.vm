@@ -1,0 +1,27 @@
+#*
+* Sets common page references in the current Velocity Context.
+* 
+* Can be used to initialize a Page Context by setting the common Context variables. 
+*#
+#macro(initPageContext)
+#end
+##
+#*
+* Extension to Spring velocity tools integration to support message resolution with arguments
+* The velocityResolver bean must be configured with exposeSpringMacroHelpers property to call
+* this macro.
+* 
+* <property name="exposeSpringMacroHelpers">
+*	        <value>true</value>
+* </property>
+*	    
+* 
+* Context References
+* 	Reference				Type									In/Out	Description
+*	-------------------------------------------------------------------------------------------------------
+*	springMacroRequestContext org.springframework.context			In		Spring Message Source context
+*#
+#*
+* return resolved message code with bound argument value replacement. 
+*#
+#macro(springMessageWithArgs $code $args)$springMacroRequestContext.getMessage($code, $args)#end

@@ -1,0 +1,69 @@
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:mvc="http://www.springframework.org/schema/mvc"
+	xmlns:util="http://www.springframework.org/schema/util"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans
+    	http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+		http://www.springframework.org/schema/mvc
+		http://www.springframework.org/schema/mvc/spring-mvc-3.0.xsd
+		http://www.springframework.org/schema/context
+		http://www.springframework.org/schema/context/spring-context-3.0.xsd
+		http://www.springframework.org/schema/util
+		http://www.springframework.org/schema/util/spring-util-3.0.xsd">
+
+  	<import resource="vf-velocity-support-servlet.xml"/>
+	
+	<bean id="velocityConfig"
+		class="org.springframework.web.servlet.view.velocity.VelocityConfigurer">
+		<!--
+			For some reason putting any whitespace between the resource loader
+			path values causes it to break
+		-->
+		<property name="resourceLoaderPath"
+			value="/WEB-INF/views/velocity" />
+		<property name="velocityProperties">
+			<props>
+				<prop key="velocimacro.library">
+					/WEB-INF/views/velocity/macros/lib.vm
+		    	</prop>
+				<prop key="resource.loader">file</prop>
+				<prop key="file.resource.loader.class">
+					org.apache.velocity.runtime.resource.loader.FileResourceLoader
+				</prop>
+				<prop key="directive.parse.max.depth">20</prop>
+				<prop key="velocimacro.library.autoreload">true</prop>
+				<prop key="file.resource.loader.cache">false</prop>
+				<prop key="velocimacro.provide.scope.control">true</prop>
+				<prop key="velocimacro.permissions.allow.inline">true</prop>
+				<prop key="velocimacro.permissions.allow.inline.to.replace.global">true</prop>
+				<prop key="input.encoding">UTF-8</prop>
+				<prop key="output.encoding">UTF-8</prop>
+			</props>
+		</property>
+	</bean>
+
+	<bean id="velocityResolver"
+		class="org.springframework.web.servlet.view.velocity.VelocityLayoutViewResolver">
+		<property name="order" value="1" />
+		<property name="exposeSpringMacroHelpers">
+			<value>true</value>
+		</property>
+
+		<property name="toolboxConfigLocation" value="/WEB-INF/views/velocity/toolbox.xml" />
+
+		<property name="exposeRequestAttributes" value="true" />
+		<property name="exposeSessionAttributes" value="true" />
+		<property name="layoutKey" value="layout" />
+		
+		<property name="contentType" value="text/html; charset=UTF-8" />
+		
+		<property name="prefix">
+			<value></value>
+		</property>
+		<property name="suffix">
+			<value>.vm</value>
+		</property>
+		
+	</bean>
+</beans>

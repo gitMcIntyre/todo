@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:aop="http://www.springframework.org/schema/aop"
+	xmlns:tx="http://www.springframework.org/schema/tx" 
+	xsi:schemaLocation="http://www.springframework.org/schema/beans
+    	http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+		http://www.springframework.org/schema/aop
+		http://www.springframework.org/schema/aop/spring-aop-3.0.xsd
+		http://www.springframework.org/schema/context
+		http://www.springframework.org/schema/context/spring-context-3.0.xsd
+		http://www.springframework.org/schema/tx 
+		http://www.springframework.org/schema/tx/spring-tx-3.0.xsd">
+	
+	<context:component-scan base-package="com.vf.common.dao"  />
+
+	<context:property-placeholder location="classpath:META-INF/spring/hibernate.properties" />
+
+	 <bean id="DataSource" 
+	     class="org.springframework.jdbc.datasource.DriverManagerDataSource">
+	     <property name="driverClassName" value="${hibernate.connection.driver_class}" />
+	     <property name="url" value="${hibernate.connection.url}" />
+	     <property name="username" value="${hibernate.connection.username}"/>
+	     <property name="password" value="${hibernate.connection.password}"/>
+	 </bean>
+
+	
+	<!--  hibernate  section  -->
+	<bean id="vfSessionFactory"
+		class="org.springframework.orm.hibernate3.LocalSessionFactoryBean">
+		<property name="dataSource" ref="${datasource.bean}"/>
+		<property name="configLocation"	value="${sessionfactory.configlocation}" />
+		<property name="exposeTransactionAwareSessionFactory" value="${sessionfactory.exposeTransactionFactory}"/>
+		<property name="hibernateProperties"  >
+			<props>
+				<prop key="hibernate.show_sql">${hibernate.show_sql}</prop>
+				<prop key="hibernate.current_session_context_class">${hibernate.current_session_context_class}</prop>
+				<prop key="hibernate.cache.use_second_level_cache">${hibernate.cache.use_second_level_cache}</prop>
+				<prop key="hibernate.dialect">${hibernate.dialect}</prop>
+			</props>
+		</property>
+	</bean>
+
+
+	<bean id="vfTransactionManager"
+		class="org.springframework.orm.hibernate3.HibernateTransactionManager">
+		<property name="sessionFactory" ref="vfSessionFactory" />
+	</bean>
+
+	<aop:config>
+		<!-- <aop:pointcut id="commonTransactionalMethods" expression="" />-->
+
+		<aop:pointcut id="commonSupportedTxnMethods" expression="execution(* com.vf.common.dao.impl.DAOImpl.*(..))" />
+
+		<aop:advisor advice-ref="supportedTxnAdvice" pointcut-ref="commonSupportedTxnMethods" />
+		<!-- <aop:advisor advice-ref="requiredTxnAdvice" pointcut-ref="commonTransactionalMethods" />-->
+		
+	</aop:config>
+
+	<tx:advice id="requiredTxnAdvice" transaction-manager="vfTransactionManager">
+		<tx:attributes>
+			<tx:method name="delete*" propagation="REQUIRED" />
+			<tx:method name="insert*" propagation="REQUIRED" />
+			<tx:method name="update*" propagation="REQUIRED" />
+			<tx:method name="save*" propagation="REQUIRED" />
+			<tx:method name="executeSQL" propagation="REQUIRES_NEW" />
+			<tx:method name="do*" propagation="REQUIRED"  />
+			<tx:method name="*" propagation="SUPPORTS" read-only="true" />
+		</tx:attributes>
+	</tx:advice>
+	 
+	<tx:advice id="supportedTxnAdvice" transaction-manager="vfTransactionManager">
+		<tx:attributes>
+			<tx:method name="*" propagation="SUPPORTS" read-only="true"/>
+		</tx:attributes>
+	</tx:advice>
+	
+</beans>

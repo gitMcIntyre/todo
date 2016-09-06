@@ -1,0 +1,87 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" 
+	"http://www.w3.org/TR/html4/loose.dtd">
+<html dir="ltr">
+<head>
+	<title>Life's Little ToDo's</title>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8"></meta>
+	<link rel=stylesheet href="/todo/theme/todo.css"/>
+	<link rel=stylesheet href="/todo/javascript/dojo/dojox/grid/tests/enhanced/support/common.css"/>
+	<style type="text/css">
+	</style>
+	<script type="text/javascript" src="/todo/javascript/dojo/dojo/dojo.js" djConfig="isDebug:true, parseOnLoad: true"></script>
+	<script type="text/javascript" src="/todo/javascript/com/vf/vf.js"></script>
+	<script type="text/javascript" src="/todo/javascript/com/vf/broker/task/Controller.js"></script>
+	<script type="text/javascript">
+		//Define the structure of the Grid Columns.
+		dojo.require("dojox.grid.cells.dijit");
+		var layout = [{
+			cells: [
+				{ field: "taskId", name:"Id", datatype:"number", width: 4, editable: false},
+				{ field: "description", name:"Task", datatype:"string", width: 50, editable: true},
+				{ field: "status", name:"Status", cellType: "dojox.grid.cells.ComboBox", options:["Active", "Complete"], editable: true, width: 10}
+			]
+		}];
+	</script>
+
+	<script>
+	(function(){
+		var controller = null;
+	
+		dojo.addOnLoad(function(){
+			try{
+				controller = new vf.broker.task.Controller();
+				controller.initialize();
+			}
+			catch(ex){
+				alert('Initialization error');
+			}
+			
+		});
+		
+		dojo.addOnUnload(function(){
+			
+			if(controller){
+				controller.cleanup();
+				delete controller;
+			}
+		});
+		
+		})();
+	
+	</script>
+</head>
+
+<body class="claro">
+	<div id="gridContainer">
+		<p class="box">
+			<button id="createButton" data-dojo-type="dijit.form.Button" data-dojo-props='showLabel:true, iconClass:"plusIcon", value:"Create"'>
+				New
+			</button>
+			<button id="removeButton" data-dojo-type="dijit.form.Button" data-dojo-props='showLabel:true, iconClass:"plusIcon", value:"Delete"'>
+				Delete
+			</button>
+			<button id="removeCompletedButton" data-dojo-type="dijit.form.Button" data-dojo-props='showLabel:true, iconClass:"plusIcon", value:"Delete"'>
+				Delete All Completed
+			</button>
+			<button id="viewButton" data-dojo-type="dijit.form.ComboButton" data-dojo-props='optionsTitle:"View", iconClass:"plusIcon", title:"Toggle displayed tasks."'>
+				<span>View</span>
+				<span id="viewMenu" data-dojo-type="dijit.Menu"'>
+					<span data-dojo-type="dijit.MenuItem" id="viewAll" data-dojo-props=''>All</span>
+					<span data-dojo-type="dijit.MenuItem" id="viewActive" data-dojo-props=''>Active</span>
+					<span data-dojo-type="dijit.MenuItem" id="viewComplete" data-dojo-props='id:"viewComplete"'>Complete</span>
+				</span>
+			</button>
+
+
+			<button id="saveButton" data-dojo-type="dijit.form.Button" data-dojo-props='showLabel:true, iconClass:"plusIcon", value:"Save"'>
+				Save
+			</button>
+			
+		</p>
+		<div id="grid" dojoType="dojox.grid.EnhancedGrid" structure="layout"></div>
+		
+		<div class="countBox">There are currently <span style="color:yellow" id="countNode">0</span> Active ToDo's for you to complete.</div>
+	</div>
+	
+</body>
+</html>
