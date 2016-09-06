@@ -1,0 +1,86 @@
+	@import "/todo/javascript/dojo/dijit/themes/claro/document.css";
+	@import "/todo/javascript/dojo/dijit/tests/css/dijitTests.css";
+
+	/* group multiple buttons in a row */
+	.box {
+		display: block;
+		text-align: left;
+	}
+	BUTTON, INPUT,
+	.box .dijit {
+		margin-right: 10px;
+		vertical-align: middle;
+	}
+	.acmeButton .dijitButtonNode {
+		background: rgb(96,96,96) !important;
+		color: white !important;
+		padding: 10px !important;
+		font-size: x-large !important;
+		padding-top: 10px !important;
+		padding-bottom: 10px !important;
+		border: 2px inset rgb(96,96,96);
+	}
+	.acmeButtonHover .dijitButtonNode {
+		background-color: rgb(89,94,111) !important;
+		color: cyan !important;
+	}
+	.acmeButtonFocused .dijitButtonNode {
+		border: yellow inset 2px;
+	}
+	.acmeButtonActive .dijitButtonNode {
+		background-color: white !important;
+		color: black !important;
+		border: 2px solid black !important;
+	}
+
+
+	body {
+		font-size: 0.9em;
+		font-family: Geneva, Arial, Helvetica, sans-serif;
+		padding: 0.5em;
+	}
+	.title {
+		text-align:center;
+		margin:1em;
+	}
+		#grid{
+		width: 90em;
+		height: 30em;
+	}
+	.outerdiv{
+		position: relative;
+		height: 300px;
+		width: 300px;
+		background-color:blue;
+	}
+	.innerdiv{
+		display:block;
+		position: absolute;
+		height: 100px;
+		width: 100px;
+		left: 50px;
+		top: 50px;
+		background-color:red;
+	}
+	.innerBtn{
+		position: absolute;
+		height: 100px;
+		width: 100px;
+		right: 50px;
+		bottom: 50px;
+		background-color:yellow;
+	}
+	
+	.vfactiveRow tr{
+		color: blue; !important
+	}
+	
+	.countBox{
+		align: right;
+		background: rgb(96,96,96) !important;
+		color: white !important;
+		padding: 10px !important;
+		font-size: large !important;
+		padding-top: 10px !important;
+		padding-bottom: 10px !important;
+	}
