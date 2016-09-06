@@ -1,0 +1,25 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+        "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+        "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping auto-import="false" package="com.vf.common.dao.entityobjects">
+  <class name="com.vf.common.dao.entityobjects.TaskEO" table="task">
+
+   <id column="TASKID" name="taskId" unsaved-value="0" type="integer" >
+         <generator class="increment"/>
+   </id>
+    <property name="rowId" column="RowId" type="integer" update="false"/>
+    <property name="description" column="DESCRIPTION" type="string" length="100"/>
+    <property name="status" column="STATUS" type="string" length="50" />
+    <property name="createDate" column="CREATEDATE" type="timestamp" />
+  </class>
+  
+	<query name="findAllTasks">
+		<![CDATA[
+		from com.vf.common.dao.entityobjects.TaskEO a
+		order by a.taskId asc
+		]]>
+	</query>
+  
+</hibernate-mapping>
